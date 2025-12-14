@@ -1,95 +1,53 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - main
-      - 'feature/**'
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
-  lint-and-format:
-    name: Lint & Format Codebase
+  build-and-test:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Run Super-Linter
-        uses: github/super-linter@v5 # Comprehensive linter for various file types
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ALL_CODEBASE: true
-          # Specific linters relevant to a GitHub Actions/ActionsFlow template
-          VALIDATE_YAML: true # For GitHub Actions workflows and ActionsFlow definitions
-          VALIDATE_MARKDOWN: true # For READMEs and documentation
-          VALIDATE_JSON: true # For potential ActionsFlow configs or other JSON metadata
-          VALIDATE_BASH: true # For any utility scripts
-          FILTER_REGEX_EXCLUDE: 'docs/|README.md' # Exclude docs and top-level README from linting in this step
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
-  security-scan:
-    name: Security Scan (CodeQL)
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Lint and Format
+      run: |
+        npm run lint
+        npm run format -- --check
+
+    - name: Build
+      run: npm run build
+
+    - name: Test
+      run: npm test
+
+  actionsflow-build:
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write # Required for CodeQL to upload results
+    needs: build-and-test
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          languages: 'javascript' # Actionsflow is Node.js based; analyze any potential JS code or configs
-
-      - name: Autobuild CodeQL Database
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
-  validate-template-structure:
-    name: Validate ActionsFlow Template Structure
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Verify ActionsFlow Core Directory
-        run: |
-          if [ ! -d ".actionsflow" ]; then
-            echo "Error: The .actionsflow/ directory is missing. This is a core requirement for an ActionsFlow template."
-            exit 1
-          fi
-          echo ".actionsflow/ directory found."
-
-      - name: Verify Presence of Flow Definitions
-        run: |
-          find .actionsflow -maxdepth 2 -type f \( -name "*.yml" -o -name "*.yaml" \) | grep -q . || {
-            echo "Error: No YAML flow definition files found within .actionsflow/. At least one flow file is required."
-            exit 1
-          }
-          echo "At least one ActionsFlow YAML definition file found."
-
-      - name: Validate GitHub Actions Workflows Syntax
-        run: |
-          echo "Validating GitHub Actions workflow syntax..."
-          for workflow_file in .github/workflows/*.yml; do
-            if [ -f "$workflow_file" ]; then
-              act --detect-event --workflow "$workflow_file" --dry-run || {
-                echo "Error: GitHub Actions workflow '$workflow_file' contains syntax errors."
-                exit 1
-              }
-              echo "GitHub Actions workflow '$workflow_file' syntax is valid."
-            fi
-          done
-          echo "All GitHub Actions workflow files validated successfully."
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Actionsflow workflows
+        run: npm run build

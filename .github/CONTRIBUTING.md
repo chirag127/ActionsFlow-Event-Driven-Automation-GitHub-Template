@@ -49,22 +49,16 @@ There are many ways to contribute:
 
 ### Setting Up Your Development Environment
 
-This template primarily involves YAML-based workflow definitions and potentially JavaScript/TypeScript for custom Actionsflow components or GitHub Actions. No complex local environment setup is strictly required for *modifying* the YAML, but for local testing of Actionsflow or custom actions, you might need specific tools.
-
 1.  **Fork the Repository:** Click the 'Fork' button at the top right of the [repository page](https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template).
 2.  **Clone Your Fork:**
-    bash
+    ```bash
     git clone https://github.com/<YOUR_USERNAME>/ActionsFlow-Event-Driven-Automation-GitHub-Template.git
     cd ActionsFlow-Event-Driven-Automation-GitHub-Template
-    
-3.  **Install Actionsflow (Optional, for local testing):**
-    If you plan to test Actionsflow workflows locally, install it globally:
-    bash
-    npm install -g @actionsflow/cli
-    
-    Refer to the [Actionsflow documentation](https://actionsflow.github.io/actionsflow/) for detailed setup and local execution instructions.
-4.  **Install Node.js/npm (If contributing to JavaScript/TypeScript Actions/Components):**
-    Ensure you have Node.js (LTS version) and npm installed if you intend to work on custom JavaScript or TypeScript-based GitHub Actions or Actionsflow sources. We recommend using `nvm` (Node Version Manager).
+    ```
+3.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
 
 ## Making Changes
 
@@ -81,36 +75,26 @@ We use a `main` branch for stable releases. All new features and bug fixes shoul
 We adhere to the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/). This helps us generate release notes and understand the purpose of each commit.
 
 **Format:**
-
-
+```
 <type>(<scope>): <short description>
 
 [optional body]
 [optional footer(s)]
-
-
-**Examples:**
-
-*   `feat(workflow): Add new daily summary workflow`
-*   `fix(ci): Resolve failing build on main branch`
-*   `docs(readme): Update contribution guidelines`
-*   `chore(deps): Bump actionsflow to v1.2.3`
+```
 
 ### Testing
 
-All contributions should include appropriate testing. For Actionsflow and GitHub Actions, this often means:
+All contributions should include appropriate testing. For custom TypeScript components, include unit tests using `Vitest`. Before submitting, ensure your changes pass all local linting and any relevant tests.
 
-*   **Manual Verification:** Run the workflow against test data or in a dedicated test repository.
-*   **Automated Tests:** For custom JavaScript/TypeScript components, include unit tests using `Vitest` or similar frameworks.
-*   **Linting:** Ensure all YAML, Markdown, and JavaScript/TypeScript files adhere to formatting and style standards (e.g., `prettier`, `eslint`, YAML linters).
-
-Before submitting, ensure your changes pass all local linting and any relevant tests.
+```bash
+npm test
+```
 
 ### Style Guidelines
 
 *   **YAML:** Follow a consistent indentation (2 spaces), logical grouping of properties, and clear, concise naming for all workflow elements.
-*   **JavaScript/TypeScript:** Adhere to the `Biome` standards for linting and formatting. Ensure strict type checking is enabled and all types are correctly defined.
-*   **Markdown:** Use clear headings, bullet points, and code blocks for readability. Ensure all documentation is accurate and up-to-date.
+*   **TypeScript:** Adhere to the `Biome` standards for linting and formatting. Run `npm run lint` and `npm run format` before committing.
+*   **Markdown:** Use clear headings, bullet points, and code blocks for readability.
 
 ## Submitting Your Contribution
 
@@ -118,7 +102,6 @@ Before submitting, ensure your changes pass all local linting and any relevant t
 
 *   Before opening a new issue, please search existing issues to see if it has already been reported.
 *   For bug reports, use our [Bug Report Template](https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/blob/main/.github/ISSUE_TEMPLATE/bug_report.md) and provide as much detail as possible.
-*   For feature requests or enhancements, provide a clear description of the desired functionality and its potential benefits.
 
 ### Pull Request Guidelines
 
@@ -134,12 +117,10 @@ Before submitting, ensure your changes pass all local linting and any relevant t
     *   Reference any related issues (e.g., `Fixes #123`, `Closes #456`).
     *   Ensure all CI/CD checks pass.
 
-We will review your pull request promptly and may request changes or clarifications.
-
 ## Security Vulnerabilities
 
-If you discover a security vulnerability, please report it responsibly following our [Security Policy](https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/blob/main/.github/SECURITY.md). Do **NOT** open a public issue. We appreciate your efforts to keep this project secure.
+If you discover a security vulnerability, please report it responsibly following our [Security Policy](https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/blob/main/.github/SECURITY.md).
 
 ## License
 
-By contributing to ActionsFlow-Event-Driven-Automation-GitHub-Template, you agree that your contributions will be licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/blob/main/LICENSE).
+By contributing to ActionsFlow-Event-Driven-Automation-GitHub-Template, you agree that your contributions will be licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https.github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/blob/main/LICENSE).
