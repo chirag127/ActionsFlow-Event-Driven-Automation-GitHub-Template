@@ -1,17 +1,35 @@
+# src/workflows/rss.yml
+name: "RSS Feed Listener"
+
 on:
   rss:
-    url: https://hnrss.org/newest?points=300&count=3
+    url: "https://hnrss.org/newest?points=300&count=3"
+    config:
+      limit: 10 # Only process the 10 most recent items
+
 jobs:
-  print:
-    name: Print
-    runs-on: ubuntu-latest
+  process_feed:
+    name: "Process RSS Feed"
+    runs-on: "ubuntu-latest"
+
     steps:
-      - name: Print Outputs
-        env:
-          title: ${{on.rss.outputs.title}}
-          contentSnippet: ${{on.rss.outputs.contentSnippet}}
-          link: ${{on.rss.outputs.link}}
+      - name: "Log Feed Item"
+        id: "log_item"
         run: |
-          echo title: $title
-          echo contentSnippet: $contentSnippet
-          echo link: $link
+          echo "--- New Hacker News Item ---"
+          echo "Title: ${{on.rss.outputs.title}}"
+          echo "Link: ${{on.rss.outputs.link}}"
+          echo "Content Snippet: ${{on.rss.outputs.contentSnippet}}"
+          echo "---------------------------"
+
+      - name: "Example: Use in another step"
+        if: success()
+        run: |
+          echo "This is another step that could use the RSS data."
+          echo "For example, sending a notification or creating an issue."
+          echo "Title from previous step: ${{on.rss.outputs.title}}"
+
+      - name: "Error Handling"
+        if: failure()
+        run: |
+          echo "An error occurred while processing the RSS feed."

@@ -1,0 +1,17 @@
+# .github/badges.yml
+badges:
+  - name: "Build Status"
+    shield: "github/actions/workflow/status/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/ci.yml?branch=main&style=flat-square"
+    url: "https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/actions/workflows/ci.yml"
+
+  - name: "Tech Stack"
+    shield: "badge/Tech%20Stack-TypeScript%20%7C%20Actionsflow%20%7C%20YAML-blue?style=flat-square"
+    url: "https://github.com/actionsflow/actionsflow"
+
+  - name: "License"
+    shield: "badge/License-CC%20BY--NC%204.0-orange?style=flat-square"
+    url: "LICENSE"
+
+  - name: "GitHub Stars"
+    shield: "github/stars/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template?style=flat-square"
+    url: "https://github.com/chirag127/ActionsFlow-Event-Driven-Automation-GitHub-Template/stargazers"
